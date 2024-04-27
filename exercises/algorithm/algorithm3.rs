@@ -5,8 +5,29 @@
 */
 // I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn sort<T: Ord>(array: &mut [T]) {
+    quicksort(array, 0, array.len() as isize - 1);
+}
+
+fn quicksort<T: Ord>(array: &mut [T], low: isize, high: isize) {
+    if low < high {
+        let p = partition(array, low, high);
+        quicksort(array, low, p - 1);
+        quicksort(array, p + 1, high);
+    }
+}
+
+fn partition<T: Ord>(array: &mut [T], low: isize, high: isize) -> isize {
+    let pivot = high as usize;
+    let mut i = low - 1;
+    for j in low..high {
+        if array[j as usize] <= array[pivot] {
+            i += 1;
+            array.swap(i as usize, j as usize);
+        }
+    }
+    array.swap((i + 1) as usize, pivot as usize);
+    i + 1
 }
 #[cfg(test)]
 mod tests {
